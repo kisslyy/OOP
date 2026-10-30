@@ -38,8 +38,8 @@ class Point2D:
         return math.sqrt((p2[0] - p1[0]) ** 2 + (p2[1] - p1[1]) ** 2)
 
 
-point1 = Point2D(1.234, 6.789)
-point2 = Point2D(4.0, 2.0)
+point1 = Point2D(4.23334, 17.73489)
+point2 = Point2D(54, 223.999)
 
 print(str(point1))
 print(repr(point1))
