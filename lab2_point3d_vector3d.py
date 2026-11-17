@@ -1,14 +1,18 @@
 import math
+from lab1_point2d import Point2D
 
 
-class Point3d:
+class Point3d(Point2D):
     _total_points_count = 0
 
     def __init__(self, x, y, z):
-        self.x = float(x)
-        self.y = float(y)
+        super().__init__(x, y)
         self.z = float(z)
         Point3d._total_points_count += 1
+
+    @classmethod
+    def get_total_points_count(cls):
+        return cls._total_points_count
 
     def __str__(self):
         return f"({self.x:.2f}, {self.y:.2f}, {self.z:.2f})"
@@ -32,7 +36,10 @@ class Point3d:
         return cls(point.x, point.y, point.z)
 
     @classmethod
-    def from_polar(cls, r, theta_degrees, phi_degrees):
+    def from_polar(cls, r, theta_degrees, phi_degrees=None):
+        if phi_degrees is None:
+            phi_degrees = 0.0
+
         theta = math.radians(theta_degrees)
         phi = math.radians(phi_degrees)
 
@@ -257,84 +264,84 @@ class Vector3d:
 point1 = Point3d(4.23334, 17.73489, 5.22345)
 point2 = Point3d(54, 223.999, 15)
 
-print(str(point1))
-print(repr(point1))
+print(f"str(point1) = {str(point1)}")
+print(f"repr(point1) = {repr(point1)}")
 
-print(point1.distance_to(point2))
+print(f"point1.distance_to(point2) = {point1.distance_to(point2)}")
 
 point3 = Point3d.origin()
-print(point3)
+print(f"Point3d.origin() = {point3}")
 
 point4 = Point3d.clone(point1)
-print(point4)
-print(point4 is point1)
+print(f"Point3d.clone(point1) = {point4}")
+print(f"point4 is point1 = {point4 is point1}")
 
 point5 = Point3d.from_polar(5.0, 60.0, 30.0)
-print(point5)
+print(f"Point3d.from_polar(5.0, 60.0, 30.0) = {point5}")
 
-print(Point3d.distance_between((0, 0, 0), (3, 4, 12)))
+print(f"Point3d.distance_between((0, 0, 0), (3, 4, 12)) = {Point3d.distance_between((0, 0, 0), (3, 4, 12))}")
 
-print(Point3d._total_points_count)
+print(f"Point3d total points count = {Point3d.get_total_points_count()}")
 
 
 vector1 = Vector3d(3, 4, 5)
 vector2 = Vector3d(1, 2, 3)
 
 vector3 = Vector3d.from_points(point1, point2)
-print(vector3)
+print(f"Vector3d.from_points(point1, point2) = {vector3}")
 
-print(vector1 == vector2)
-print(vector1 > vector2)
-print(vector1 < vector2)
+print(f"vector1 == vector2: {vector1 == vector2}")
+print(f"vector1 > vector2: {vector1 > vector2}")
+print(f"vector1 < vector2: {vector1 < vector2}")
 
-print(vector1 + vector2)
-print(vector1 - vector2)
-print(vector1 * vector2)
-print(vector1 / vector2)
+print(f"vector1 + vector2 = {vector1 + vector2}")
+print(f"vector1 - vector2 = {vector1 - vector2}")
+print(f"vector1 * vector2 = {vector1 * vector2}")
+print(f"vector1 / vector2 = {vector1 / vector2}")
 
-print(vector1 + 3)
-print(3 + vector1)
+print(f"vector1 + 3 = {vector1 + 3}")
+print(f"3 + vector1 = {3 + vector1}")
 
-print(vector1 - 3)
-print(3 - vector1)
+print(f"vector1 - 3 = {vector1 - 3}")
+print(f"3 - vector1 = {3 - vector1}")
 
-print(vector1 * 3)
-print(3 * vector1)
+print(f"vector1 * 3 = {vector1 * 3}")
+print(f"3 * vector1 = {3 * vector1}")
 
-print(vector1 / 3)
-print(30 / vector1)
+print(f"vector1 / 3 = {vector1 / 3}")
+print(f"30 / vector1 = {30 / vector1}")
 
 
 vector4 = Vector3d(6, 8, 10)
 vector4_id = id(vector4)
 
 vector4 += Vector3d(1, 2, 3)
-print(vector4, id(vector4) == vector4_id)
+print(f"vector4 after +=, same object = {vector4}, {id(vector4) == vector4_id}")
 
 vector4 -= 1
-print(vector4, id(vector4) == vector4_id)
+print(f"vector4 after -=, same object = {vector4}, {id(vector4) == vector4_id}")
 
 vector4 *= Vector3d(2, 2, 2)
-print(vector4, id(vector4) == vector4_id)
+print(f"vector4 after *=, same object = {vector4}, {id(vector4) == vector4_id}")
 
 vector4 /= 2
-print(vector4, id(vector4) == vector4_id)
+print(f"vector4 after /=, same object = {vector4}, {id(vector4) == vector4_id}")
 
 
 vector5 = Vector3d(1, 2, 3)
 vector6 = Vector3d(4, 5, 6)
 
-print(vector5 @ vector6)
+print(f"vector5 @ vector6 = {vector5 @ vector6}")
 
 
 vector7 = Vector3d(3, 4, 0)
-print(len(vector7))
+print(f"len(vector7) = {len(vector7)}")
 
 
 vector8 = Vector3d(1, 2, 3)
 vector9 = Vector3d(2, 4, 6)
 
-print((vector8 @ vector9) == Vector3d(0, 0, 0))
+print(f"vector8 and vector9 are collinear = {(vector8 @ vector9) == Vector3d(0, 0, 0)}")
 
 
 vector10 = Vector3d(1, 0, 0)
@@ -342,16 +349,17 @@ vector11 = Vector3d(0, 1, 0)
 vector12 = Vector3d(1, 1, 0)
 
 cross_product = vector10 @ vector11
-
-print(
+is_coplanar = (
     cross_product.x * vector12.x +
     cross_product.y * vector12.y +
     cross_product.z * vector12.z == 0
 )
 
+print(f"vector12 is coplanar with vector10 and vector11 = {is_coplanar}")
 
-print(vector1[0])
-print(vector1["x"])
+
+print(f"vector1[0] = {vector1[0]}")
+print(f"vector1['x'] = {vector1['x']}")
 
 for component in vector1:
-    print(component)
+    print(f"component = {component}")

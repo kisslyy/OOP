@@ -27,7 +27,10 @@ class Point2D:
         return cls(point.x, point.y)
 
     @classmethod
-    def from_polar(cls, r, theta_degrees):
+    def from_polar(cls, r, theta_degrees, phi_degrees=None):
+        if phi_degrees is not None:
+            raise ValueError("Point2D does not use phi_degrees")
+
         theta = math.radians(theta_degrees)
         x = r * math.cos(theta)
         y = r * math.sin(theta)
@@ -38,24 +41,25 @@ class Point2D:
         return math.sqrt((p2[0] - p1[0]) ** 2 + (p2[1] - p1[1]) ** 2)
 
 
-point1 = Point2D(4.23334, 17.73489)
-point2 = Point2D(54, 223.999)
+if __name__ == "__main__":
+    point1 = Point2D(4.23334, 17.73489)
+    point2 = Point2D(54, 223.999)
 
-print(str(point1))
-print(repr(point1))
+    print(str(point1))
+    print(repr(point1))
 
-print(point1.distance_to(point2))
+    print(point1.distance_to(point2))
 
-point3 = Point2D.origin()
-print(point3)
+    point3 = Point2D.origin()
+    print(point3)
 
-point4 = Point2D.clone(point1)
-print(point4)
-print(point4 is point1)
+    point4 = Point2D.clone(point1)
+    print(point4)
+    print(point4 is point1)
 
-point5 = Point2D.from_polar(5.0, 60.0)
-print(point5)
+    point5 = Point2D.from_polar(5.0, 60.0)
+    print(point5)
 
-print(Point2D.distance_between((0.0, 0.0), (3.0, 4.0)))
+    print(Point2D.distance_between((0.0, 0.0), (3.0, 4.0)))
 
-print(Point2D.total_points_count)
+    print(Point2D.total_points_count)
